@@ -1,9 +1,10 @@
 "use server";
 
+import { env } from "@/env";
+import { XMLParser } from "fast-xml-parser";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import qs from "qs";
-import { env } from "../env";
 
 export interface AthleteData {
   access_token: string;
@@ -67,7 +68,12 @@ export async function loginUser(code: string) {
   await session.save();
 }
 
-export async function getRouteGpx(id: string) {
+export interface GetRouteGpxResponse {
+  base64: string;
+  filename: string;
+}
+
+export async function getRouteGpx(id: string): Promise<GetRouteGpxResponse> {
   const session = await getSession();
   const res = await fetch(
     `https://www.strava.com/api/v3/routes/${id}/export_gpx`,
@@ -79,7 +85,11 @@ export async function getRouteGpx(id: string) {
   );
   const result = await res.arrayBuffer();
   const buffer = Buffer.from(result);
-
+  const parsedXml = new XMLParser().parse(buffer);
   const base64String = buffer.toString("base64");
-  return `data:application/xhtml+xml;base64,${base64String}`;
+
+  return {
+    base64: `data:application/xhtml+xml;base64,${base64String}`,
+    filename: `${parsedXml.gpx.metadata.name}.gpx`,
+  };
 }

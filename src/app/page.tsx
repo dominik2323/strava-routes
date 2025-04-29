@@ -1,5 +1,5 @@
+import GetGpxRoute from "@/modules/GetGpxRoute";
 import { Metadata } from "next";
-import GetGpxRoute from "../modules/GetGpxRoute";
 
 export const metadata: Metadata = {};
 
@@ -7,7 +7,7 @@ interface PageProps {}
 
 async function Page({}: PageProps) {
   return (
-    <main>
+    <main className='px-4'>
       <GetGpxRoute />
     </main>
   );

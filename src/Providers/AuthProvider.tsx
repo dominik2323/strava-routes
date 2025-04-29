@@ -1,7 +1,7 @@
 "use client";
 
+import { AthleteData } from "@/actions/strava";
 import { createContext, ReactNode, useContext } from "react";
-import { AthleteData } from "../actions/strava";
 
 export const AuthContext = createContext<AthleteData>(null);
 

@@ -1,8 +1,9 @@
+import { AuthProvider } from "@/Providers/AuthProvider";
+import { getSession } from "@/actions/strava";
+import Navbar from "@/components/Navbar";
+import "@/css/globals.css";
 import { Metadata } from "next";
 import React from "react";
-import { AuthProvider } from "../Providers/AuthProvider";
-import { getSession } from "../actions/strava";
-import Navbar from "../components/Navbar";
 
 export const metadata: Metadata = {};
 
@@ -18,7 +19,7 @@ async function Layout({ children }: LayoutProps) {
       <html lang='en'>
         <body>
           <Navbar />
-          {children}
+          <div className='mt-16'>{children}</div>
         </body>
       </html>
     </AuthProvider>
