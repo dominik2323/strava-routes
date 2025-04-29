@@ -3,6 +3,7 @@
 import { getRouteGpx, GetRouteGpxResponse } from "@/actions/strava";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import { useAthleteData } from "@/Providers/AuthProvider";
 import { Label } from "@radix-ui/react-label";
 import { FormEvent, useRef, useState } from "react";
 
@@ -19,6 +20,7 @@ function getRouteId(routeUrl: string) {
 
 function GetGpxRoute({}: GetGpxRouteProps) {
   const [gpx, setGpx] = useState<GetRouteGpxResponse | null>(null);
+  const athlete = useAthleteData();
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -33,6 +35,16 @@ function GetGpxRoute({}: GetGpxRouteProps) {
       setGpx(gpx);
     });
   };
+
+  if (!athlete) {
+    return (
+      <div className='pt-4'>
+        <p className='text-sm text-center text-muted-foreground'>
+          Please login to get your GPX route
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col gap-2 max-w-md mx-auto'>
